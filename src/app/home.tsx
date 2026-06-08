@@ -3,7 +3,7 @@ import { router } from "expo-router"
 import { signOut } from "firebase/auth"
 import { collection, getDocs } from "firebase/firestore"
 import { useEffect, useState } from "react"
-import { FlatList, Text, TouchableOpacity, View } from "react-native"
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 
 
 export default function Home(){
@@ -44,60 +44,133 @@ export default function Home(){
 
 
   return(
-    <View style={{flex:1, padding:20}}>
-        <Text style={{fontSize:24, fontWeight:"bold", marginBottom:20}}>Vagas</Text>
-        <TouchableOpacity
-  onPress={() => router.push("/cadastro")}
-  style={{
+    <View style={styles.container}>
+
+  <Text style={styles.titulo}>💼 Vagas Disponíveis</Text>
+
+  <TouchableOpacity
+    onPress={() => router.push("/cadastro")}
+    style={styles.botaoCadastrar}
+  >
+    <Text style={styles.textoBotao}>+ Cadastrar Vaga</Text>
+  </TouchableOpacity>
+
+  <FlatList
+    data={vagas}
+    keyExtractor={(item) => item.id}
+    showsVerticalScrollIndicator={false}
+    renderItem={({ item }) => (
+      <View style={styles.card}>
+        <Text style={styles.cargo}>{item.cargo}</Text>
+
+        <Text style={styles.empresa}>
+          🏢 {item.empresa}
+        </Text>
+
+        <Text style={styles.salario}>
+          💰 R$ {item.salario}
+        </Text>
+      </View>
+    )}
+  />
+
+  <TouchableOpacity
+    onPress={logout}
+    style={styles.botaoLogout}
+  >
+    <Text style={styles.textoLogout}>
+      Sair da Conta
+    </Text>
+  </TouchableOpacity>
+
+</View>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#F4F6F8",
+    padding: 20,
+  },
+
+  titulo: {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "#1E3A8A",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+
+  botaoCadastrar: {
     backgroundColor: "#2563EB",
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    borderRadius: 12,
+    padding: 15,
+    borderRadius: 14,
     alignItems: "center",
-    justifyContent: "center",
+    marginBottom: 20,
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+
+  textoBotao: {
+    color: "#FFF",
+    fontSize: 17,
+    fontWeight: "bold",
+  },
+
+  card: {
+    backgroundColor: "#FFF",
+    padding: 18,
+    borderRadius: 15,
     marginBottom: 15,
-    elevation: 4, // Android
-    shadowColor: "#000", // iOS
+
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-  }}
->
-  <Text
-    style={{
-      color: "#FFF",
-      fontSize: 16,
-      fontWeight: "bold",
-    }}
-  >
-    Cadastrar Vagas
-  </Text>
-</TouchableOpacity>
-        <FlatList 
-        data={vagas}
-        keyExtractor={(item)=> item.id}
-        renderItem={({item})=>(
-          <View style={{borderWidth:1, padding:15, marginBottom:10, borderRadius:8}}>
-            <Text style={{fontWeight:"bold", fontSize:18}}>{item.cargo}</Text>
-             <Text>{item.empresa}</Text>
-              <Text>R$ - {item.salario}</Text>
-          </View>
-        )}
-        
-        />
+    shadowOpacity: 0.08,
+    shadowRadius: 3,
+    elevation: 3,
+  },
 
-        <TouchableOpacity onPress={logout}
-        style={{
-            backgroundColor:"#ef4444",
-            padding:15,
-            borderRadius:10
-        }}
-        >
-            <Text style={{color:"#fff", textAlign:"center", fontWeight:"bold"}}>Logout</Text>
-        </TouchableOpacity>
-    </View>
-  )
-}
+  cargo: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#111827",
+    marginBottom: 8,
+  },
+
+  empresa: {
+    fontSize: 16,
+    color: "#4B5563",
+    marginBottom: 5,
+  },
+
+  salario: {
+    fontSize: 18,
+    color: "#16A34A",
+    fontWeight: "bold",
+  },
+
+  botaoLogout: {
+    backgroundColor: "#DC2626",
+    padding: 15,
+    borderRadius: 14,
+    alignItems: "center",
+    marginTop: 10,
+  },
+
+  textoLogout: {
+    color: "#FFF",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+});
