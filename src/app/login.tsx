@@ -2,7 +2,9 @@ import { auth } from "@/firebase/firebaseConfig";
 import { router } from "expo-router";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+
+
 
 export default function Login(){
 
@@ -50,9 +52,12 @@ export default function Login(){
 
     return(
         <View style={styles.container}>
-            <Text style={styles.titulo}>
-                Login
-            </Text>
+            
+
+            <Image 
+            source={require("../../assets/images/logo-novo-vagas.png")}
+            style={{flex:1, justifyContent:'center', marginLeft:300}}
+            />
 
 
             <TextInput 
@@ -89,7 +94,7 @@ const styles = StyleSheet.create({
         flex:1,
         justifyContent:'center',
         padding:20,
-        backgroundColor:"#f8fafc"
+        backgroundColor:"#02a97f"
     },
      titulo:{
         fontSize:28,
